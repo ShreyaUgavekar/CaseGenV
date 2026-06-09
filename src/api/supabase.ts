@@ -2,10 +2,12 @@
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL ?? '';
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY ?? '';
-const IS_PROD = !!SUPABASE_URL;
+
+// Use Vite's built-in flag — true only when `vite build` was run, not in `vite dev`
+const IS_PROD = import.meta.env.PROD;
 
 export function edgeFunctionUrl(name: string): string {
-  if (IS_PROD) return `${SUPABASE_URL}/functions/v1/${name}`;
+  if (IS_PROD && SUPABASE_URL) return `${SUPABASE_URL}/functions/v1/${name}`;
   return `/dev-proxy/${name}`;
 }
 
