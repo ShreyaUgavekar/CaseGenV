@@ -143,21 +143,6 @@ export function InputPanel({ onGenerate, isLoading }: Props) {
     } finally { setJiraFetching(false); }
   };
 
-  // Convert Atlassian Document Format to plain text
-  function extractJiraDescription(adf: unknown): string {
-    if (!adf) return '';
-    if (typeof adf === 'string') return adf;
-    const doc = adf as { content?: unknown[] };
-    if (!doc.content) return '';
-    return doc.content.map(extractNode).join('\n');
-  }
-
-  function extractNode(node: unknown): string {
-    const n = node as { type?: string; text?: string; content?: unknown[] };
-    if (n.type === 'text') return n.text ?? '';
-    if (n.content) return n.content.map(extractNode).join('');
-    return '';
-  }
 
   const handleSubmit = () => {
     const input = mode === 'prd' ? prdText : buildJiraInput();
